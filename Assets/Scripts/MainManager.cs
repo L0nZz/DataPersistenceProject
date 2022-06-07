@@ -1,26 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-
+using System.IO;
 public class MainManager : MonoBehaviour
 {
-    public Brick BrickPrefab;
-    public int LineCount = 6;
-    public Rigidbody Ball;
 
-    public Text ScoreText;
-    public GameObject GameOverText;
-    
-    private bool m_Started = false;
-    private int m_Points;
-    
-    private bool m_GameOver = false;
-
-    
-    // Start is called before the first frame update
-    void Start()
+public Brick BrickPrefab;
+public int LineCount = 6;
+public Rigidbody Ball;
+public Text ScoreText;
+public GameObject GameOverText;
+private bool m_Started = false;
+[HideInInspector] public int m_Points;
+private bool m_GameOver = false;
+    private void Start()
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -37,7 +30,6 @@ public class MainManager : MonoBehaviour
             }
         }
     }
-
     private void Update()
     {
         if (!m_Started)
@@ -53,6 +45,7 @@ public class MainManager : MonoBehaviour
                 Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
             }
         }
+        
         else if (m_GameOver)
         {
             if (Input.GetKeyDown(KeyCode.Space))
@@ -61,16 +54,26 @@ public class MainManager : MonoBehaviour
             }
         }
     }
-
     void AddPoint(int point)
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
     }
-
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        Save();
+        UIHandler.instance.Load();
+    }
+    public void Save()
+    {
+        PlayerData playerData = new PlayerData(this, UIHandler.instance);
+        playerData.highScore = m_Points;
+        playerData.playerName = UIHandler.instance.playerNameInputField.text;
+
+        string json = JsonUtility.ToJson(playerData);
+
+        File.WriteAllText(Application.persistentDataPath + "/Save.json", json);
     }
 }

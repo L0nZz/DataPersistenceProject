@@ -449,8 +449,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f062c2f5de9c7824c9fc40bd2fac7898, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 1781594474}
+  playerNameInputField: {fileID: 1970968986}
   mainMenuUI: {fileID: 1924481729}
-  HighScore: {fileID: 1781594472}
+  nameAndHighScore: {fileID: 1781594472}
 --- !u!1 &861594158
 GameObject:
   m_ObjectHideFlags: 0
@@ -1034,7 +1036,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: 'Best Score : Name : 0'
+  m_Text: Best Score
 --- !u!222 &1781594475
 CanvasRenderer:
   m_ObjectHideFlags: 0
